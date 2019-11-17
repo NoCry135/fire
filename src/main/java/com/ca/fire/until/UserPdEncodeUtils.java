@@ -1,7 +1,8 @@
 package com.ca.fire.until;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+
+
+import org.apache.commons.codec.binary.Base64;
 
 import java.security.MessageDigest;
 import java.util.Random;
@@ -44,7 +45,7 @@ public class UserPdEncodeUtils {
         hexValue.insert(1, "AB");
         hexValue.insert(28, "C2");
         hexValue.insert(19, "H3");
-        return (new BASE64Encoder()).encode(hexValue.toString().getBytes());
+        return Base64.encodeBase64String(hexValue.toString().getBytes());
 
 //        try {
 //            MessageDigest sha =  MessageDigest.getInstance("SHA");
@@ -61,7 +62,7 @@ public class UserPdEncodeUtils {
         if (null == str || str.equals("")) {
             return "";
         }
-        String temp = (new BASE64Encoder()).encode(str.getBytes()).replace("=", "");
+        String temp = Base64.encodeBase64String(str.getBytes()).replace("=", "");
         StringBuffer sb = new StringBuffer();
         char[] charArray = temp.toCharArray();
         for (char c : charArray) {
@@ -93,7 +94,7 @@ public class UserPdEncodeUtils {
         }
         byte[] decode = null;
         try {
-            decode = (new BASE64Decoder()).decodeBuffer(str);
+            decode = Base64.decodeBase64(str);
         } catch (Exception ex) {
             throw new RuntimeException("decodeByCookie! return false" + ex);
         }

@@ -1,6 +1,5 @@
 package com.ca.fire.test.design.command.unit03;
 
-import com.oracle.jrockit.jfr.Producer;
 
 import java.util.Iterator;
 import java.util.List;
