@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="restfulClientFactory" class="com.ca.fire.util.RestfulClientFactory"></bean>
+
+    <bean id="employeeRpcService" class="com.ca.fire.rpc.EmployeeRpcService" factory-bean="restfulClientFactory"
+          factory-method="createClient">
+        <constructor-arg value="com.ca.fire.rpc.EmployeeRpcService" type="java.lang.Class"></constructor-arg>
+        <constructor-arg value="http://localhost/"></constructor-arg>
+    </bean>
+
+
+</beans>

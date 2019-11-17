@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 集成Mybatis -->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--<property name="configLocation" value="classpath:mapper-config.xml" /> -->
+        <!-- MAPPER 和 resultMap 配置路径 -->
+        <property name="mapperLocations">
+            <list>
+                <!-- 表示在classpath下mapper目录中以-mapper.xml结尾所有文件 -->
+                <value>classpath*:mapper/*/*Mapper.xml</value>
+            </list>
+        </property>
+        <!-- 扫描别名定义  多个包名以逗号或分号分隔 -->
+        <property name="typeAliasesPackage" value="com.ca.domain.ems;com.ca.domain.map;com.ca.domain.position;com.ca.domain.redis;com.ca.domain.safemon;com.ca.domain.report" />
+        <!--
+         | MyBatis配置文件  一般主要用来配置别名，本项目别名通过扫描typeAliasesPackage所以不需要配置文件了
+         | <property name="configLocation" value="classpath:mybatis-configuration.xml" />
+         | -->
+        <property name="configurationProperties">
+            <props>
+                <prop key="cacheEnabled">true</prop>
+                <prop key="callSettersOnNulls">true</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

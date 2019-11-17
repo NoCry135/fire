@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="../static/js/vue/vue.js"></script>
+
+
+</head>
+<body>
+hello vue
+<div id="app">
+    <p> {{message}}</p>
+   <input type="text" v-model = "message"/>
+</div>
+    <div id = "id1">
+        <h1> hello Vue.js!</h1>
+        <h1 v-if ="yes">Yes</h1>
+        <h1 v-if ="no">No!</h1>
+        <h1 v-if = "age > 25">Age: {{age}}</h1>
+        <h1 v-if = "name.indexOf('jack') >= 0">Name : {{name}}</h1>
+    </div>
+<div id = "id2">
+    <h1> hello Vue.js!</h1>
+    <h1 v-show ="yes">Yes</h1>
+    <h1 v-show ="no">No!</h1>
+    <h1 v-show = "age > 25">Age: {{age}}</h1>
+    <h1 v-show = "name.indexOf('jack') >= 0">Name : {{name}}</h1>
+</div>
+</body>
+<script>
+    var exampleData = {
+        message: 'hello world 1!'
+    }
+    new Vue({
+        el: '#app',
+        data: exampleData
+    })
+
+    var vm = new Vue({
+        el:'#id1',
+        data:{
+            yes :true,
+            no:false,
+            age:28,
+            name:'Tomjack'
+        }
+
+    })
+
+    var show = new Vue({
+        el:'#id2',
+        data:{
+            yes :true,
+            no:false,
+            age:28,
+            name:'Tomjack'
+        }
+
+    })
+</script>
+</html>

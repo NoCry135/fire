@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ca.fire.dao.UserDao">
+
+    <cache eviction="LRU" flushInterval="600000" readOnly="false" size="1024"></cache>
+
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
+
+
+    <resultMap id="userResultMap" type="com.ca.fire.domain.bean.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+        <result column="tel_phone" property="telPhone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <result column="ts" property="ts" jdbcType="TIMESTAMP"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="userModelResultMap" type="com.ca.fire.domain.bean.UserModel">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="pass_word" property="passWord" jdbcType="VARCHAR"/>
+        <result column="tel_phone" property="telPhone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <sql id="baseColumn">
+        user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user,is_delete,ts,version
+    </sql>
+
+    <sql id="baseWhere">
+        <where>
+            <if test="userName != null and userName != '' ">
+                set user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="passWord != null and passWord != '' ">
+                set pass_word = #{passWord,jdbcType=VARCHAR}
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                set tel_phone = #{telPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != '' ">
+                set email = #{email,jdbcType=VARCHAR}
+            </if>
+
+        </where>
+    </sql>
+    <select id="selectById" resultMap="userResultMap" parameterType="java.lang.Long">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user where id = #{id,jdbcType = BIGINT}
+
+
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_user (user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user) VALUES(
+        #{userName,jdbcType=VARCHAR},  #{passWord,jdbcType=VARCHAR},    #{telPhone,jdbcType=VARCHAR},   #{email,jdbcType=VARCHAR},
+        now(), now(),    #{createUser,jdbcType=VARCHAR},   #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO tb_user (user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user) VALUES
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{item.userName,jdbcType=VARCHAR},
+            #{item.passWord,jdbcType=VARCHAR},
+            #{item.telPhone,jdbcType=VARCHAR},
+            #{item.email,jdbcType=VARCHAR},
+            now(), now(),
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.updateUser,jdbcType=VARCHAR}
+
+            )
+        </foreach>
+
+
+    </insert>
+    <update id="update">
+        UPDATE tb_user
+        <trim suffixOverrides=",">
+            set update_time = now(),
+            <if test="userName != null and userName != '' ">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null and passWord != '' ">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                tel_phone = #{telPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null and updateUser != '' ">
+                update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+        </trim>
+
+
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteById">
+        update tb_user set is_delete = 1
+        where id =  #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="select" resultMap="userResultMap" parameterType="com.ca.fire.domain.bean.User">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType = BIGINT}
+            </if>
+
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="passWord != null and passWord != '' ">
+                and pass_word = #{passWord,jdbcType=VARCHAR}
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                and tel_phone = #{telPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != '' ">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+
+        </where>
+    </select>
+
+
+    <select id="queryUser" resultMap="userResultMap" parameterType="com.ca.fire.domain.bean.User">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        <where>
+            is_delete = 0
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                and tel_phone = #{telPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != '' ">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            order by update_time desc
+
+        </where>
+        <if test="startIndex != null and pageSize != null ">
+            limit #{startIndex,jdbcType=INTEGER} , #{pageSize,jdbcType=INTEGER}
+        </if>
+
+    </select>
+    <select id="count" resultType="integer">
+        select count(1) from tb_user where is_delete =0
+    </select>
+    <select id="queryAllUser" resultMap="userModelResultMap" parameterType="com.ca.fire.domain.bean.User">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        <where>
+            is_delete = 0
+            <if test="userName != null and userName != '' ">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                and tel_phone = #{telPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != '' ">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            order by update_time desc
+
+        </where>
+        <if test="startIndex != null and pageSize != null ">
+            limit #{startIndex,jdbcType=INTEGER} , #{pageSize,jdbcType=INTEGER}
+        </if>
+
+    </select>
+
+    <select id="selectByName" resultMap="userResultMap" parameterType="string">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        where user_name = #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByIds" resultMap="userResultMap" parameterType="arraylist">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        where id in
+        <!-- 参数为list.其他不可以-->
+        <foreach collection="list" close=")" open="(" separator="," item="id">
+            #{id,jdbcType =BIGINT }
+        </foreach>
+    </select>
+    <select id="selectByNames" resultMap="userResultMap" parameterType="arraylist">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        where user_name in
+        <!-- 参数为list.其他不可以-->
+        <foreach collection="names" close=")" open="(" separator="," item="id">
+            #{id,jdbcType =BIGINT }
+        </foreach>
+    </select>
+    <select id="selectByEmailAndName" resultMap="userResultMap" parameterType="string">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        where user_name = #{userName,jdbcType=VARCHAR}
+        and email = #{email,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByMap" resultMap="userResultMap" parameterType="map">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_user
+        where user_name = #{userName,jdbcType=VARCHAR}
+        and email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByIDs" parameterType="com.ca.fire.domain.bean.User">
+        <selectKey order="AFTER" keyProperty="id" resultType="java.lang.Long">
+            select (select id from tb_user where
+            user_name = #{userName,jdbcType=VARCHAR}
+            ) as id from dual
+        </selectKey>
+        UPDATE tb_user
+        <trim suffixOverrides=",">
+            set update_time = now(),
+            <if test="updateUser != null and updateUser != '' ">
+                update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+        </trim>
+
+
+        where user_name = #{userName,jdbcType=VARCHAR}
+
+    </update>
+</mapper>

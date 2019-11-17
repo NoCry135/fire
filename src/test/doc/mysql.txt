@@ -1,0 +1,12 @@
+1.mysql只能用到一个索引，测试时间和其他条件
+2.desc explain
+3.sql profile
+4.间隙锁 只影响插入
+5.not exists 优化为left join
+6.exists 优化为inner join
+7.in优化成inner join
+8.OR关联条件使用union all,尽量使用union all避免使用 union
+9.时间日期不加字符串
+10.date_add(update_time,interval 1 day) > now() => update_time > date_add(now(),interval -1 day)
+11.删除大量数据使用主键,不超过1000条
+12.增加冗余数据

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <!--<bean id="myData" class="com.ca.fire.test.thread.local.MyData"/>-->
+    <!--<bean id ="clusterNo" class="com.ca.fire.until.uuid.LocalFileclusterNo"></bean>-->
+    <!--<bean id="redisClient" class="redis.clients.jedis.Jedis">-->
+
+        <!--<constructor-arg index="0" value="192.168.47.100"></constructor-arg>-->
+        <!--<constructor-arg index="1" value="6379"></constructor-arg>-->
+
+    <!--</bean>-->
+    <!--<bean id="redisSequenceAllotter" class="com.ca.fire.until.uuid.RedisSequenceAllotter">-->
+        <!--<property name="redisClient" ref="redisClient"/>-->
+        <!--<property name="clusterNo" ref="clusterNo"/>-->
+    <!--</bean>-->
+    <!--<bean id="uuidGenerator" class="com.ca.fire.until.uuid.UuidGenerator">-->
+        <!--<property name="sequenceAllotter" ref="redisSequenceAllotter"/>-->
+    <!--</bean>-->
+</beans>

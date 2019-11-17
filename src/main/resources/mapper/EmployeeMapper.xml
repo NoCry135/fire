@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ca.fire.dao.EmployeeDao">
+
+    <!--<cache eviction="LRU" flushInterval="600000" readOnly="false" size="1024"></cache>-->
+
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+
+    <resultMap id="EmpResultMap" type="com.ca.fire.domain.Employee">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+        <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="dept_no" property="deptNo" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <!--<association property="address" javaType="com.ca.fire.domain.Address">-->
+            <!--<result column="emp_no" property="empNo" jdbcType="INTEGER"/>-->
+            <!--<result column="add_name" property="address" jdbcType="INTEGER"/>-->
+        <!--</association>-->
+        <!--第一条SQL的查询结果作为第二个SQL语句的参数-->
+        <association property="address" select="com.ca.fire.dao.EmployeeDao.selectAdd" column="emp_no" />
+    </resultMap>
+
+    <resultMap id="DeptResultMap" type="com.ca.fire.domain.DeptMent">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="dept_no" property="deptNo" jdbcType="INTEGER"/>
+        <result column="dept_name" property="deptName" jdbcType="INTEGER"/>
+        <result column="dept_leader_no" property="deptLeaderNo" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <collection property="employeeList" ofType="com.ca.fire.domain.Employee">
+            <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+            <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+            <result column="email" property="email" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="VARCHAR"/>
+            <association property="address" javaType="com.ca.fire.domain.Address">
+                <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+                <result column="add_name" property="address" jdbcType="INTEGER"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <!--元素类型为 “resultMap” 的内容必须匹配 “(constructor?,id*,result*,association*,collection*,discriminator?) 按顺序匹配-->
+
+    <resultMap id="DeptEmpResultMap" type="com.ca.fire.domain.DeptMent">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="dept_no" property="deptNo" jdbcType="INTEGER"/>
+        <result column="dept_name" property="deptName" jdbcType="INTEGER"/>
+        <result column="dept_leader_no" property="deptLeaderNo" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <collection property="employeeList" ofType="com.ca.fire.domain.Employee">
+            <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+            <result column="emp_name" property="empName" jdbcType="VARCHAR"/>
+            <result column="email" property="email" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="VARCHAR"/>
+            <result column="gender" property="gender" jdbcType="TINYINT"/>
+            <association property="address" javaType="com.ca.fire.domain.Address">
+                <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+                <result column="add_name" property="address" jdbcType="INTEGER"/>
+            </association>
+            <collection property="carList" ofType="com.ca.fire.domain.Car">
+                <result column="emp_no" property="empNo" jdbcType="INTEGER"/>
+                <result column="car_no" property="carNo" jdbcType="INTEGER"/>
+                <result column="car_name" property="carName" jdbcType="INTEGER"/>
+            </collection>
+            <!-- 如何是男生 gender==0 ,查询把邮箱付给电话;女,把电话付给邮箱-->
+            <discriminator javaType="integer" column="gender">
+                <case value="0" resultType="com.ca.fire.domain.Employee">
+                    <result column="email" property="phone" jdbcType="VARCHAR"/>
+                </case>
+                <case value="1" resultType="com.ca.fire.domain.Employee">
+                    <result column="phone" property="email" jdbcType="VARCHAR"/>
+                </case>
+            </discriminator>
+        </collection>
+    </resultMap>
+
+    <sql id="baseColumn">
+      emp_no,emp_name, email, phone, dept_no, create_time, update_time, is_delete   </sql>
+    <select id="selectAdd" resultType="com.ca.fire.domain.Address">
+        SELECT  id,emp_no as empNo,add_name  as address FROM tb_address where emp_no = #{empNo,jdbcType =VARCHAR}
+    </select>
+    <select id="selectList" resultMap="EmpResultMap" parameterType="Employee">
+        SELECT id,
+        <include refid="baseColumn"/>
+        FROM tb_emp
+        <where>
+            <if test="empNo != null  ">
+                AND emp_no = #{empNo,jdbcType=INTEGER}
+            </if>
+            <if test="deptNo != null  ">
+                AND dept_no = #{deptNo,jdbcType=INTEGER}
+            </if>
+            <if test="email != null and email != '' ">
+                AND email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != '' ">
+                AND phone = #{phone,jdbcType=VARCHAR}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectWithAddressList" resultMap="EmpResultMap" parameterType="Employee">
+        SELECT emp.id, emp.emp_no, emp.emp_name, emp.email, emp.phone, emp.dept_no, emp.create_time, emp.update_time,
+        emp.is_delete, address.add_name
+        FROM tb_emp emp LEFT JOIN tb_address address ON emp.emp_no = address.emp_no
+        <where>
+            <if test="empNo != null  ">
+                AND emp.emp_no = #{empNo,jdbcType=INTEGER}
+            </if>
+            <if test="deptNo != null  ">
+                AND emp.dept_no = #{deptNo,jdbcType=INTEGER}
+            </if>
+            <if test="email != null and email != '' ">
+                AND emp.email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != '' ">
+                AND emp.phone = #{phone,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDept" resultMap="DeptResultMap" parameterType="Employee">
+        SELECT
+        dept.dept_no,
+        dept.dept_name,
+        dept.dept_leader_no,
+        dept.id,
+        emp.emp_no,
+        emp.emp_name,
+        emp.email,
+        emp.phone,
+        emp.dept_no,
+        dept.create_time,
+        dept.update_time,
+        dept.is_delete,
+        address.add_name
+        FROM
+        tb_dept dept
+        LEFT JOIN tb_emp emp
+        ON dept.dept_no = emp.dept_no
+        LEFT JOIN tb_address address
+        ON emp.emp_no = address.emp_no
+        <where>
+            <if test="empNo != null  ">
+                AND emp.emp_no = #{empNo,jdbcType=INTEGER}
+            </if>
+            <if test="deptNo != null  ">
+                AND dept.dept_no = #{deptNo,jdbcType=INTEGER}
+            </if>
+
+        </where>
+    </select>
+    <select id="selectDeptWithEmpInfo" resultMap="DeptEmpResultMap" parameterType="Employee">
+        SELECT
+        dept.dept_no,
+        dept.dept_name,
+        dept.dept_leader_no,
+        dept.id,
+        emp.emp_no,
+        emp.emp_name,
+        emp.email,
+        emp.phone,
+        emp.dept_no,
+        emp.gender,
+        dept.create_time,
+        dept.update_time,
+        dept.is_delete,
+        address.add_name,
+        car.emp_no,
+        car.car_no,
+        car.car_name
+        FROM
+        tb_dept dept
+        LEFT JOIN tb_emp emp
+        ON dept.dept_no = emp.dept_no
+        LEFT JOIN tb_address address
+        ON emp.emp_no = address.emp_no
+        LEFT JOIN tb_car car ON emp.emp_no = car.emp_no
+        <where>
+            <if test="empNo != null  ">
+                AND emp.emp_no = #{empNo,jdbcType=INTEGER}
+            </if>
+            <if test="deptNo != null  ">
+                AND dept.dept_no = #{deptNo,jdbcType=INTEGER}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_user (user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user) VALUES(
+        #{userName,jdbcType=VARCHAR},  #{passWord,jdbcType=VARCHAR},    #{telPhone,jdbcType=VARCHAR},   #{email,jdbcType=VARCHAR},
+        now(), now(),    #{createUser,jdbcType=VARCHAR},   #{updateUser,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE tb_user
+        <trim suffixOverrides=",">
+            set update_time = now(),
+            <if test="userName != null and userName != '' ">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null and passWord != '' ">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="telPhone != null and telPhone != '' ">
+                tel_phone = #{telPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' ">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser != null and updateUser != '' ">
+                update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+        </trim>
+
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+</mapper>

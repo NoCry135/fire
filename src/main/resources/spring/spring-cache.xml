@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:prop/redis.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="jedisConfig" class="com.ca.fire.cache.support.command.factory.JedisConfig">
+        <property name="servers" value="39.107.115.53:6379"/>
+        <property name="password" value="7XR4lXJPMV"/>
+        <property name="masterName" value="redis_product"/>
+        <property name="sentinelServers" value="192.168.194.135:26379,192.168.155.159:26379,192.168.155.161:26379"/>
+    </bean>
+
+    <bean id="jedisCandidatePool" class="com.ca.fire.cache.support.command.factory.JedisCandidatePool">
+        <constructor-arg index="0" ref="jedisConfig"/>
+        <constructor-arg index="1" value="3"/>
+        <property name="ignoreCandidatePoolsNotFound" value="false"/>
+    </bean>
+
+    <bean id="jedisCommands" class="com.ca.fire.cache.support.CacheProxyFactoryBean">
+        <property name="type" value="JDREDIS"/>
+        <property name="jimUrl" value="111"/>
+        <property name="jimTimeout" value="2000"/>
+        <property name="jedisPool" ref="jedisCandidatePool"/>
+    </bean>
+
+</beans>

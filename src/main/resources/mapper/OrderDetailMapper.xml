@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ca.fire.dao.OrderDetailDao">
+    <resultMap id="BaseResultMap" type="com.ca.fire.domain.bean.OrderDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="goods_no" property="goodsNo" jdbcType="VARCHAR"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="num" property="num" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="total_fee" property="totalFee" jdbcType="DECIMAL"/>
+        <result column="pic_path" property="picPath" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="ts" property="ts" jdbcType="TIMESTAMP"/>
+        <result column="is_delete" property="isDelete" jdbcType="TINYINT"/>
+        <result column="version" property="version" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+    delete from tb_order_d
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert" parameterType="com.ca.fire.domain.bean.OrderDetail">
+
+    insert into tb_order_d (goods_no, order_no,
+      num, title, price, 
+      total_fee, pic_path, create_time, 
+      update_time, create_user, update_user
+      )
+    values ( #{goodsNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
+      #{num,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{totalFee,jdbcType=DECIMAL}, #{picPath,jdbcType=VARCHAR}, now(),
+      now(), #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}
+      )
+  </insert>
+
+    <update id="updateById" parameterType="com.ca.fire.domain.bean.OrderDetail">
+    update tb_order_d
+    set goods_no = #{goodsNo,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      total_fee = #{totalFee,jdbcType=DECIMAL},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      ts = #{ts,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      version = #{version,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="update">
+
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select id, goods_no, order_no, num, title, price, total_fee, pic_path, create_time, 
+    update_time, create_user, update_user, ts, is_delete, version
+    from tb_order_d
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+    <select id="queryOrderDetailList" resultMap="BaseResultMap">
+    select id, goods_no, order_no, num, title, price, total_fee, pic_path, create_time,
+    update_time, create_user, update_user, ts, is_delete, version
+    from tb_order_d
+  </select>
+
+    <select id="selectOrderDetailByCondition" resultType="com.ca.fire.domain.bean.OrderDetail">
+
+    </select>
+    <select id="queryOrderDetailPage" resultType="com.ca.fire.domain.bean.OrderDetail">
+
+    </select>
+    <select id="selectOrderInfoMap" parameterType="java.lang.String" resultType="map">
+        select goods_no, order_no
+         from tb_order_d
+          WHERE   order_no = #{orderNo,jdbcType=VARCHAR}
+    </select>
+</mapper>

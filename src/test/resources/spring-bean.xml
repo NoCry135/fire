@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!--<bean id="initBean" class="com.ca.fire.test.spring.init.InitBean" init-method="before"-->
+    <!--destroy-method="after"></bean>-->
+
+    <!--<bean id="myMethodIntercept" class="com.ca.fire.test.spring.method.MyMethodIntercept"></bean>-->
+    <!--&lt;!&ndash;可以拦截这个类的方法&ndash;&gt;-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">-->
+    <!--<property name="beanNames">-->
+    <!--<list>-->
+    <!--<value>initBean</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--<property name="interceptorNames">-->
+    <!--<list>-->
+    <!--<value>myMethodIntercept</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;lookup-method和replaced-method&ndash;&gt;-->
+
+    <!--<bean class="com.ca.fire.test.spring.bean.AbsSayHello">-->
+    <!--<lookup-method name="getHello" bean="helloMarry"></lookup-method>-->
+    <!--</bean>-->
+    <!--<bean id="helloBom" class="com.ca.fire.test.spring.bean.HelloBom"></bean>-->
+    <!--<bean id="helloMarry" class="com.ca.fire.test.spring.bean.HelloMarry"></bean>-->
+
+    <!--<bean id="changeMethodBean" class="com.ca.fire.test.spring.bean.ChangeMethodBean">-->
+    <!--<replaced-method name="method" replacer="changeMethodBeanNew"></replaced-method>-->
+    <!--</bean>-->
+
+    <!--<bean id="changeMethodBeanNew" class="com.ca.fire.test.spring.bean.ChangeMethodBeanNew"></bean>-->
+
+    <bean id="employee" class="com.ca.fire.domain.Employee" abstract="true">
+        <property name="deptNo" value="222"></property>
+    </bean>
+    <bean id="pragramerEmployee" class="com.ca.fire.domain.PragramerEmployee" parent="employee">
+        <property name="level" value="10"></property>
+    </bean>
+
+    <bean id="deptMent" class="com.ca.fire.domain.DeptMent">
+        <property name="createUser" value="admin"></property>
+    </bean>
+    <bean id="tec" class="com.ca.fire.domain.DeptMent" parent="deptMent">
+        <property name="deptName" value="技术支持"></property>
+    </bean>
+    <bean id="dev" class="com.ca.fire.domain.DeptMent" parent="deptMent">
+        <property name="deptName" value="开发"></property>
+    </bean>
+
+    <bean id="user" class="com.ca.fire.domain.bean.User">
+        <property name="age" value="20"></property>
+    </bean>
+
+    <bean id="lisi" class="com.ca.fire.domain.bean.User" parent="user">
+        <property name="userName" value="lisi"></property>
+    </bean>
+    <bean id="zhangsan" class="com.ca.fire.domain.bean.User" parent="user">
+        <property name="userName" value="zhangsan"></property>
+    </bean>
+
+
+    <util:map id="userMap">
+        <entry key="lisi" value-ref="lisi"/>
+        <entry key="zhangsan" value-ref="zhangsan"/>
+    </util:map>
+
+</beans>

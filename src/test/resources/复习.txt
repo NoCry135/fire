@@ -1,0 +1,14 @@
+学习计划
+1.看书 
+2.基础知识:集合,多线程,io
+
+3.项目:ssm,dubbo,redis,freemarker,mq...
+4.springboot,jdk1.8,worker,
+5.设计模式,动态代理,策略,适配器,工厂
+6.linux命令
+7.mysql的锁
+8.框架
+
+spring 下载官方文档,spring框架的各个模块及其作用
+    IOC  什么是IOC
+9.dubbo
