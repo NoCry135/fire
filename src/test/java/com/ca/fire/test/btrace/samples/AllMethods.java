@@ -43,9 +43,11 @@ public class AllMethods {
      * @param probeClass
      * @param probeMethod
      * @Self 注释可用于标记一个参数以保存* this *（或* self *）值
+     * <p>
+     * location = @Location(Kind.RETURN) 和@Duration long duration 一致
      */
-    @OnMethod(clazz = "/javax\\.swing\\..*/", method = "${m}")
-    public static void m(@Self Object o, @ProbeClassName String probeClass, @ProbeMethodName String probeMethod) {
+    @OnMethod(clazz = "/javax\\.swing\\..*/", method = "${m}", location = @Location(value = Kind.RETURN, where = Where.AFTER))
+    public static void m(@Self Object o, @ProbeClassName String probeClass, @ProbeMethodName String probeMethod, @Duration long duration) {
         printer.println("this = " + o);
         printer.print("entered " + probeClass);
         printer.println("." + probeMethod);

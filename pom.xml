@@ -33,7 +33,8 @@
         <commons-collections4.version>4.1</commons-collections4.version>
         <jackson.version>2.5.4</jackson.version>
         <resteasy.version>3.0.19.Final</resteasy.version>
-
+        <btrace-path>D:/Tool/btrace-bin-1.3.11/build</btrace-path>
+        <btrace-version>1.3.11.3</btrace-version>
     </properties>
     <dependencies>
         <dependency>
@@ -483,42 +484,61 @@
             <artifactId>dubbo</artifactId>
             <version>2.6.0</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.sun.tools.btrace</groupId>-->
-        <!--<artifactId>btrace-agent</artifactId>-->
-        <!--<version>1.2.3</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.sun.tools.btrace</groupId>-->
-        <!--<artifactId>btrace-boot</artifactId>-->
-        <!--<version>1.2.3</version>-->
-        <!--</dependency>-->
-
+        <!-- 验证吗-->
         <dependency>
-            <groupId>com.sun.tools.btrace</groupId>
-            <artifactId>btrace-agent</artifactId>
-            <version>1.3.11.3</version>
-            <scope>system</scope>
-            <systemPath>D:/APPS/RepMaven/com/sun/jar-btrace/btrace-agent.jar</systemPath>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <!--一个Java基础工具类，对文件、流、加密解密、转码、正则、线程、XML等JDK方法进行封装，组成各种Util工具类，同时提供以下组件： 1. 布隆过滤 2. 缓存 3. 数据库ORM（基于ActiveRecord思想）4. HTTP客户端 5. IO 6. JSON 7. 日志 8. System（JVM和系统信息等） 9. Setting（一种扩展Properties的配置文件） -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.0.3</version>
         </dependency>
 
+        <!-- ip-->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.tools.btrace/btrace-boot -->
         <dependency>
             <groupId>com.sun.tools.btrace</groupId>
             <artifactId>btrace-boot</artifactId>
-            <version>1.3.11.3</version>
+            <version>${btrace-version}</version>
             <scope>system</scope>
-            <systemPath>D:/APPS/RepMaven/com/sun/jar-btrace/btrace-boot.jar</systemPath>
+            <systemPath>${btrace-path}/btrace-boot.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.tools.btrace/btrace-agent -->
+        <dependency>
+            <groupId>com.sun.tools.btrace</groupId>
+            <artifactId>btrace-agent</artifactId>
+            <version>${btrace-version}</version>
+            <scope>system</scope>
+            <systemPath>${btrace-path}/btrace-agent.jar</systemPath>
 
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.sun.tools.btrace/btrace-client -->
         <dependency>
             <groupId>com.sun.tools.btrace</groupId>
             <artifactId>btrace-client</artifactId>
-            <version>1.3.11.3</version>
+            <version>${btrace-version}</version>
             <scope>system</scope>
-            <systemPath>D:/APPS/RepMaven/com/sun/jar-btrace/btrace-client.jar</systemPath>
-
+            <systemPath>${btrace-path}/btrace-client.jar</systemPath>
         </dependency>
+
     </dependencies>
 
     <build>

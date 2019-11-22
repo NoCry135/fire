@@ -14,4 +14,7 @@ public class Counter {
         Thread.sleep(1000);
     }
 
+    public int get(){
+        return totalCount;
+    }
 }

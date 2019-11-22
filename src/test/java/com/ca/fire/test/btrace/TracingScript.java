@@ -1,16 +1,17 @@
 package com.ca.fire.test.btrace;
 
+import com.sun.btrace.AnyType;
 import com.sun.btrace.BTraceUtils;
 import com.sun.btrace.annotations.*;
 
-import java.util.Map;
-
 import static com.sun.btrace.BTraceUtils.*;
 
+import java.util.Map;
 
 @BTrace
 public class TracingScript {
 
+//监控某一个方法的执行时间
 
     /**
      * clazz 指定类
@@ -41,4 +42,13 @@ public class TracingScript {
         jstack();
     }
 
+    @OnMethod(clazz = "com.ann.boot.task.QuartzTaskDemo", method = "executeInternal", location = @Location(value = Kind.RETURN))
+    public static void printUserInfo(AnyType params, @Return AnyType type) {
+        BTraceUtils.print("=====");
+        BTraceUtils.println("====params=====");
+        BTraceUtils.printFields(params);
+        BTraceUtils.println("====return result=====");
+        BTraceUtils.printFields(type);
+        BTraceUtils.println();
+    }
 }

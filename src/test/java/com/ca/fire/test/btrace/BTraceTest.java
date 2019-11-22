@@ -13,6 +13,7 @@ public class BTraceTest {
             // 每次增加随机值
             counter.add(random.nextInt(10));
             Thread.sleep(5000);
+            System.out.println(counter.get());
         }
     }
 }

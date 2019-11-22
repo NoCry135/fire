@@ -1,14 +1,27 @@
 package com.ca.fire.test.collections;
 
 import com.ca.fire.domain.bean.User;
+import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TestMap {
+
+    public static void main(String[] args) {
+        Map<String, Object> result = new CaseInsensitiveMap();
+        result.put("sss", "ok");
+        result.put("baB", "ok");
+        result.put("BAc", "ok");
+        result.put("aaa", "ok");
+        result.put("AAA", "AAA");
+        System.out.println(result.get("SSS"));
+        System.out.println(result.get("BAb"));
+        System.out.println(result.get("baC"));
+        System.out.println(result.get("AAA"));
+    }
+
+
 
     @Test
     public void test01() {
