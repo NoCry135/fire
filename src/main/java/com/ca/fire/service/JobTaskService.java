@@ -4,7 +4,7 @@ import com.ca.fire.dao.ScheduleJobDao;
 import com.ca.fire.domain.ScheduleJob;
 import com.ca.fire.task.QuartzJobFactory;
 import com.ca.fire.task.QuartzJobFactoryDisallowConcurrentExecution;
-import com.ca.fire.util.JobUtils;
+import com.ca.fire.until.JobUtils;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;

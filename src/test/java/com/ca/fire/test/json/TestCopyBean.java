@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ca.fire.test.domain.Employee;
 import com.ca.fire.test.domain.Person;
 import com.ca.fire.test.domain.Student;
-import com.ca.fire.util.BeanCopierUtils;
+import com.ca.fire.until.BeanCopierUtils;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 

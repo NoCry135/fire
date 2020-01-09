@@ -1,7 +1,7 @@
 package com.ca.fire.test.redis;
 
 import com.ca.fire.domain.bean.Club;
-import com.ca.fire.util.ProtostuffUtil;
+import com.ca.fire.until.ProtostuffUtil;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 

@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 @Component
 public class LoginListener implements SmartApplicationListener {
 

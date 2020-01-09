@@ -5,7 +5,7 @@ import com.ca.fire.domain.bean.User;
 import com.ca.fire.event.EventPublisher;
 import com.ca.fire.event.LoginEvent;
 import com.ca.fire.service.UserService;
-import com.ca.fire.util.MyDataSourceSwitch;
+import com.ca.fire.until.MyDataSourceSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

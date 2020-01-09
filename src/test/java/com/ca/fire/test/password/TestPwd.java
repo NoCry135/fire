@@ -1,7 +1,8 @@
 package com.ca.fire.test.password;
 
-import com.ca.fire.util.UserPdEncodeUtils;
-import com.ca.fire.util.UserPwdEncodeUtils;
+
+import com.ca.fire.until.UserPdEncodeUtils;
+import com.ca.fire.until.UserPwdEncodeUtils;
 import org.junit.Test;
 
 public class TestPwd {

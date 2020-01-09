@@ -2,7 +2,7 @@ package com.ca.fire.rpc;
 
 import com.alibaba.fastjson.JSON;
 import com.ca.fire.domain.Employee;
-import com.ca.fire.util.HttpClientUtil;
+import com.ca.fire.until.HttpClientUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;

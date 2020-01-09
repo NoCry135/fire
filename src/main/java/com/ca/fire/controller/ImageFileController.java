@@ -5,7 +5,7 @@ import com.ca.fire.domain.bean.Item;
 import com.ca.fire.domain.bean.ItemImage;
 import com.ca.fire.service.ImageService;
 import com.ca.fire.service.ItemService;
-import com.ca.fire.util.MyUploadFile;
+import com.ca.fire.until.MyUploadFile;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

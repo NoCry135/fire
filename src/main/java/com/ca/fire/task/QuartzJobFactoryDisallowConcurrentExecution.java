@@ -1,7 +1,7 @@
 package com.ca.fire.task;
 
 import com.ca.fire.domain.ScheduleJob;
-import com.ca.fire.util.JobUtils;
+import com.ca.fire.until.JobUtils;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

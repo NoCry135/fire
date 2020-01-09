@@ -9,7 +9,7 @@ import com.ca.fire.domain.BaseResult;
 import com.ca.fire.domain.bean.User;
 import com.ca.fire.domain.bean.UserModel;
 import com.ca.fire.service.UserService;
-import com.ca.fire.util.ExportExcel;
+import com.ca.fire.until.ExportExcel;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
