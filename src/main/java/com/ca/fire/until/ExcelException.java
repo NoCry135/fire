@@ -1,7 +1,7 @@
 package com.ca.fire.until;
 
 /**
- * @author: lizeguo
+ * @author: nocry
  */
 public class ExcelException extends Exception {
 
