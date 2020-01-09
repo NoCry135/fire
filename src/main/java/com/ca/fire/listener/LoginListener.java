@@ -2,13 +2,14 @@ package com.ca.fire.listener;
 
 import com.ca.fire.domain.bean.User;
 import com.ca.fire.event.LoginEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 
 @Component
+@Slf4j
 public class LoginListener implements SmartApplicationListener {
 
     @Override
@@ -24,8 +25,7 @@ public class LoginListener implements SmartApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         User source = (User) event.getSource();
-        System.out.println("监听用户登录:user," + source.toString());
-
+        log.info("监听用户登录:{user}", source.toString());
     }
 
     @Override
