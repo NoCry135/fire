@@ -37,10 +37,6 @@ public class ExcelUtils {
             throw new ExcelException("数据源中没有任何数据");
         }
 
-//        if (sheetSize < 1 || sheetSize > 65535) {
-//            sheetSize = 65535;
-//        }
-
         WritableWorkbook wwb;
         try {
             // 创建工作簿并发送到OutputStream指定的地方
