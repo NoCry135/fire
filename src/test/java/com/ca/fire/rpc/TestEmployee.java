@@ -38,7 +38,7 @@ public class TestEmployee {
 
     @Test
     public void test03() {
-        Call<Object> employeeById = employeeRpcService.testRest(new Employee());
+        Call<Object> employeeById = employeeRpcService.testRest(new Employee("2"));
         Object body = null;
         try {
             body = employeeById.execute().body();

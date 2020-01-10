@@ -20,4 +20,7 @@ public interface UserManager {
 
     @Transactional
     boolean addPerson(User user);
+
+    Integer batchInsert(List<User> userList);
+
 }

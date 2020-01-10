@@ -11,8 +11,9 @@
     </context:component-scan>
 
     <import resource="classpath:spring/spring-dao.xml"/>
-    <import resource="classpath:spring/spring-restClient.xml"/>
-    <import resource="classpath:spring/spring-dubbo-provider.xml"/>
+    <import resource="classpath:spring/spring-aspect.xml"/>
+<!--    <import resource="classpath:spring/spring-restClient.xml"/>-->
+<!--    <import resource="classpath:spring/spring-dubbo-provider.xml"/>-->
     <!--<import resource="classpath:spring/spring-cache.xml"/>-->
 
     <!-- 开启基于注解的切面 -->

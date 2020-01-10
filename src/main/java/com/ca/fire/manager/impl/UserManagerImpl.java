@@ -59,4 +59,10 @@ public class UserManagerImpl implements UserManager {
         System.out.println(1 / 0);
         return false;
     }
+
+    @Override
+    @Transactional
+    public Integer batchInsert(List<User> userList) {
+        return userDao.batchInsert(userList);
+    }
 }

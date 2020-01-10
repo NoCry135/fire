@@ -36,38 +36,41 @@
 
     <!--<bean id="changeMethodBeanNew" class="com.ca.fire.test.spring.bean.ChangeMethodBeanNew"></bean>-->
 
-    <bean id="employee" class="com.ca.fire.domain.Employee" abstract="true">
-        <property name="deptNo" value="222"></property>
+<!--    <bean id="employee" class="com.ca.fire.domain.Employee" abstract="false">-->
+<!--        <property name="deptNo" value="222"></property>-->
+<!--    </bean>    -->
+    <bean id="employee" class="com.ca.fire.domain.Employee" abstract="false">
+        <constructor-arg index="0" value="2"></constructor-arg>
     </bean>
-    <bean id="pragramerEmployee" class="com.ca.fire.domain.PragramerEmployee" parent="employee">
-        <property name="level" value="10"></property>
-    </bean>
+<!--    <bean id="pragramerEmployee" class="com.ca.fire.domain.PragramerEmployee" parent="employee">-->
+<!--        <property name="level" value="10"></property>-->
+<!--    </bean>-->
 
-    <bean id="deptMent" class="com.ca.fire.domain.DeptMent">
-        <property name="createUser" value="admin"></property>
-    </bean>
-    <bean id="tec" class="com.ca.fire.domain.DeptMent" parent="deptMent">
-        <property name="deptName" value="技术支持"></property>
-    </bean>
-    <bean id="dev" class="com.ca.fire.domain.DeptMent" parent="deptMent">
-        <property name="deptName" value="开发"></property>
-    </bean>
+<!--    <bean id="deptMent" class="com.ca.fire.domain.DeptMent">-->
+<!--        <property name="createUser" value="admin"></property>-->
+<!--    </bean>-->
+<!--    <bean id="tec" class="com.ca.fire.domain.DeptMent" parent="deptMent">-->
+<!--        <property name="deptName" value="技术支持"></property>-->
+<!--    </bean>-->
+<!--    <bean id="dev" class="com.ca.fire.domain.DeptMent" parent="deptMent">-->
+<!--        <property name="deptName" value="开发"></property>-->
+<!--    </bean>-->
 
-    <bean id="user" class="com.ca.fire.domain.bean.User">
-        <property name="age" value="20"></property>
-    </bean>
+<!--    <bean id="user" class="com.ca.fire.domain.bean.User">-->
+<!--        <property name="age" value="20"></property>-->
+<!--    </bean>-->
 
-    <bean id="lisi" class="com.ca.fire.domain.bean.User" parent="user">
-        <property name="userName" value="lisi"></property>
-    </bean>
-    <bean id="zhangsan" class="com.ca.fire.domain.bean.User" parent="user">
-        <property name="userName" value="zhangsan"></property>
-    </bean>
+<!--    <bean id="lisi" class="com.ca.fire.domain.bean.User" parent="user">-->
+<!--        <property name="userName" value="lisi"></property>-->
+<!--    </bean>-->
+<!--    <bean id="zhangsan" class="com.ca.fire.domain.bean.User" parent="user">-->
+<!--        <property name="userName" value="zhangsan"></property>-->
+<!--    </bean>-->
 
 
-    <util:map id="userMap">
-        <entry key="lisi" value-ref="lisi"/>
-        <entry key="zhangsan" value-ref="zhangsan"/>
-    </util:map>
+<!--    <util:map id="userMap">-->
+<!--        <entry key="lisi" value-ref="lisi"/>-->
+<!--        <entry key="zhangsan" value-ref="zhangsan"/>-->
+<!--    </util:map>-->
 
 </beans>

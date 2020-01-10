@@ -163,7 +163,7 @@ public class TestSum {
     public void test01() {
         String str1 = "7663";
         String str2 = "97653";
-
+        System.out.println(str1.substring(1));
         int[] nums1 = string2intArray(str1);
         int[] nums2 = string2intArray(str2);
         int max = nums1.length > nums2.length ? nums1.length : nums2.length;

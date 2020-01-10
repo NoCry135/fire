@@ -110,7 +110,7 @@ public class TestString {
     public void testSub() {
         String str = "153562325904ts2L1OUT02-2";
         System.out.println(str.substring(11));
-        System.out.println("2222 ".substring(0, 11));
+        System.out.println("2222 ".substring(0, 2));
         String s1 = new String("153562325904ts2L1OUT02");
         String s2 = new String("153562325904ts2L1OUT02-3");
         String s3 = new String("153562325904ts2L1OUT0-2-5");

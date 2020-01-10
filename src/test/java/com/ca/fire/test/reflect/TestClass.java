@@ -59,6 +59,9 @@ public class TestClass {
     public void test02() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         //1.得到student的class对象
         Class clazz = Class.forName("com.ca.fire.test.domain.Student");
+        Constructor declaredConstructor1 = clazz.getDeclaredConstructor();
+        Object newInstance = declaredConstructor1.newInstance("22");
+        System.out.println(newInstance);
 
         //获取所有共有构造方法
         Constructor[] constructors = clazz.getConstructors();

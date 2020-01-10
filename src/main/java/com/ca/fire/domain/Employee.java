@@ -20,7 +20,11 @@ public class Employee extends BaseDomain {
 
     private List<Car> carList;
 
-    public Employee() {
+//    public Employee() {
+//    }
+
+    public Employee(String empName) {
+        this.empName = empName;
     }
 
     public Integer getEmpNo() {

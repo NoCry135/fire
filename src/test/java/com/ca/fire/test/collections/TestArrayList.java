@@ -3,9 +3,23 @@ package com.ca.fire.test.collections;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestArrayList {
 
+    public int singleNumber(int[] nums) {
+        List<Integer> num1 = new ArrayList<>();
+        List<Integer> num2 = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (num1.contains(nums[i])) {
+                num2.add(nums[i]);
+            } else {
+                num1.add(nums[i]);
+            }
+        }
+        num1.removeAll(num2);
+        return num1.get(0);
+    }
 
     @Test
     public void test01() {
@@ -34,7 +48,7 @@ public class TestArrayList {
             list.add(i);
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("使用ensureCapacity方法前："+(endTime - startTime));
+        System.out.println("使用ensureCapacity方法前：" + (endTime - startTime));
 
         list = new ArrayList<Object>();
         long startTime1 = System.currentTimeMillis();
@@ -43,6 +57,6 @@ public class TestArrayList {
             list.add(i);
         }
         long endTime1 = System.currentTimeMillis();
-        System.out.println("使用ensureCapacity方法后："+(endTime1 - startTime1));
+        System.out.println("使用ensureCapacity方法后：" + (endTime1 - startTime1));
     }
 }

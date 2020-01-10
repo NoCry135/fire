@@ -1,18 +1,18 @@
 package com.ca.fire.jvmMonitor.profiler.util;
 
+import com.ca.fire.jvmMonitor.profiler.jvm.LocalJvmInfoPicker;
+
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class CacheUtil {
 
-    private static final Pattern IP_PATTERN;
+    private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
     private static final String STR_HOST_ERROR_DETECTED = "** HOST ERROR DETECTED **";
     private static final String STR_IP_ERROR_DETECTED = "** IP ERROR DETECTED **";
     private static final String LOG_TIME_FORMAT = "yyyyMMddHHmmssSSS";
@@ -20,37 +20,76 @@ public class CacheUtil {
     public static final int ALIVETIME = 20000;
     public static final int JVMTIME_R = 10000;
     public static final int JVMTIME_E = 14400000;
-    public static Boolean SYSTEM_HEART_INIT;
-    public static Boolean JVM_MONITOR_INIT;
+    public static Boolean SYSTEM_HEART_INIT = Boolean.valueOf(false);
+    public static Boolean JVM_MONITOR_INIT = Boolean.valueOf(false);
     public static final String QUOTATION = "\"";
     public static final String COLON = ":";
     public static final String COMMA = ",";
     public static final String EXTENSIVE = "1";
     public static final String NONEXTENSIVE = "0";
-    public static final Map<String, Long> FUNC_HB;
-    public static final String HOST_NAME;
-    public static final String HOST_IP;
+    public static final Map<String, Long> FUNC_HB = new HashMap();
+    private static final LocalJvmInfoPicker jvmInfoPicker = LocalJvmInfoPicker.getInstance();
+    public static final String HOST_NAME = jvmInfoPicker.getHostName();
+    public static final int cpus = jvmInfoPicker.getAvailableProcessors();
+    public static final String HOST_IP = getHostIP();
+    public static final String LINE_SEP = System.getProperty("line.separator");
+    public static final byte[] LINE_SEP_BYTES = LINE_SEP.getBytes();
+    public static final String APP_NAME = getAppName();
+    public static final byte[] APP_NAME_BYTES = APP_NAME.getBytes();
+    public static final String UMP_PREFFIX = getPreffix();
+    private static final String DEFAULT_PATH = "/export/home/tomcat/UMP-Monitor";
+    public static boolean is_jdos = false;
 
-    private static String getHostName() {
-        String host = "** HOST ERROR DETECTED **";
+    private static String getPreffix() {
+        String preffix;
+        if (((preffix = System.getProperty("umpPreffix")) != null) && (!preffix.equals(""))) {
+            return preffix.charAt(preffix.length() - 1) == '/' ? preffix.substring(0, preffix.length() - 1) : preffix;
+        }
+        Properties conf = new Properties();
+        Properties props = null;
+        InputStream is = null;
         try {
-            try {
-                final InetAddress localAddress = InetAddress.getLocalHost();
-                host = localAddress.getHostName();
-            } catch (Throwable e) {
-                final InetAddress localAddress2 = getLocalAddress();
-                if (localAddress2 != null) {
-                    host = localAddress2.getHostName();
-                } else {
-                    host = "** HOST ERROR DETECTED **";
+            is = CacheUtil.class.getResourceAsStream("/config.properties");
+            if (is != null) {
+                conf.load(is);
+                preffix = conf.getProperty("jiankonglogPath", "/export/home/tomcat/UMP-Monitor");
+                if (preffix.equals("")) {
+                    preffix = "/export/home/tomcat/UMP-Monitor";
+                }
+            } else {
+                preffix = "/export/home/tomcat/UMP-Monitor";
+            }
+            return preffix;
+        } catch (Throwable localThrowable4) {
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (Throwable localThrowable3) {
                 }
             }
-        } catch (Throwable t) {
         }
-        return host;
+        return "/export/home/tomcat/UMP-Monitor";
     }
 
-    public static String getHostIP() {
+    private static String getAppName() {
+        String appName;
+        if (((appName = System.getenv("def_app_name")) != null) && (!appName.equals(""))) {
+            return appName;
+        }
+        if (((appName = System.getenv("deploy_app_name")) != null) && (!appName.equals(""))) {
+            is_jdos = true;
+            return "jdos_" + appName;
+        }
+        if (((appName = System.getProperty("appName")) != null) && (!appName.equals(""))) {
+            return appName;
+        }
+        System.out.println("UMP Daemon can't get appName from your environment!!! This issue is very serious!!! please read wiki!");
+
+        return "unknown";
+    }
+
+    private static String getHostIP() {
         String ip = "** IP ERROR DETECTED **";
         try {
             if (getLocalAddress() != null) {
@@ -58,7 +97,7 @@ public class CacheUtil {
             } else {
                 ip = "** IP ERROR DETECTED **";
             }
-        } catch (Throwable t) {
+        } catch (Throwable localThrowable) {
         }
         return ip;
     }
@@ -66,21 +105,25 @@ public class CacheUtil {
     public static String getNowTime() {
         String nowTime = null;
         try {
-            final Date rightNow = new Date();
-            final DateFormat format1 = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            nowTime = format1.format(rightNow);
+            Date rightNow = new Date();
+            TimeZone localTimeZone = TimeZone.getTimeZone("GMT+8");
+            DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            df.setTimeZone(localTimeZone);
+            nowTime = df.format(rightNow);
         } catch (Exception e) {
             nowTime = "";
         }
         return nowTime;
     }
 
-    public static String changeLongToDate(final long time) {
+    public static String changeLongToDate(long time) {
         String nowTime = null;
         try {
-            final Date date = new Date(time);
-            final DateFormat format1 = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            nowTime = format1.format(date);
+            Date date = new Date(time);
+            TimeZone localTimeZone = TimeZone.getTimeZone("GMT+8");
+            DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            df.setTimeZone(localTimeZone);
+            nowTime = df.format(date);
         } catch (Exception e) {
             nowTime = "";
         }
@@ -88,8 +131,8 @@ public class CacheUtil {
     }
 
     public static String getLocalIP() {
-        final InetAddress address = getLocalAddress();
-        return (address == null) ? null : address.getHostAddress();
+        InetAddress address = getLocalAddress();
+        return address == null ? null : address.getHostAddress();
     }
 
     private static InetAddress getLocalAddress() {
@@ -99,51 +142,41 @@ public class CacheUtil {
             if (isValidAddress(localAddress)) {
                 return localAddress;
             }
-        } catch (Throwable t) {
+        } catch (Throwable localThrowable) {
         }
         try {
-            final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             if (interfaces != null) {
                 while (interfaces.hasMoreElements()) {
                     try {
-                        final NetworkInterface network = interfaces.nextElement();
-                        final Enumeration<InetAddress> addresses = network.getInetAddresses();
-                        if (addresses == null) {
-                            continue;
-                        }
-                        while (addresses.hasMoreElements()) {
-                            try {
-                                final InetAddress address = addresses.nextElement();
-                                if (isValidAddress(address)) {
-                                    return address;
+                        NetworkInterface network = (NetworkInterface) interfaces.nextElement();
+                        Enumeration<InetAddress> addresses = network.getInetAddresses();
+                        if (addresses != null) {
+                            while (addresses.hasMoreElements()) {
+                                try {
+                                    InetAddress address = (InetAddress) addresses.nextElement();
+                                    if (isValidAddress(address)) {
+                                        return address;
+                                    }
+                                } catch (Throwable localThrowable1) {
                                 }
-                                continue;
-                            } catch (Throwable e) {
                             }
                         }
-                    } catch (Throwable e2) {
+                    } catch (Throwable localThrowable2) {
                     }
                 }
             }
-        } catch (Throwable t2) {
+        } catch (Throwable localThrowable3) {
         }
         return localAddress;
     }
 
-    private static boolean isValidAddress(final InetAddress address) {
-        if (address == null || address.isLoopbackAddress()) {
+    private static boolean isValidAddress(InetAddress address) {
+        if ((address == null) || (address.isLoopbackAddress())) {
             return false;
         }
-        final String ip = address.getHostAddress();
-        return ip != null && !"0.0.0.0".equals(ip) && !"127.0.0.1".equals(ip) && CacheUtil.IP_PATTERN.matcher(ip).matches();
-    }
+        String ip = address.getHostAddress();
 
-    static {
-        IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
-        CacheUtil.SYSTEM_HEART_INIT = false;
-        CacheUtil.JVM_MONITOR_INIT = false;
-        FUNC_HB = new HashMap<String, Long>();
-        HOST_NAME = getHostName();
-        HOST_IP = getHostIP();
+        return (ip != null) && (!"0.0.0.0".equals(ip)) && (!"127.0.0.1".equals(ip)) && (IP_PATTERN.matcher(ip).matches());
     }
 }

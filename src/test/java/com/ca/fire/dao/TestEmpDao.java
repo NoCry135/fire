@@ -20,7 +20,7 @@ public class TestEmpDao {
 
     @Test
     public void test01() {
-        Employee employee = new Employee();
+        Employee employee = new Employee("2");
         employee.setEmpNo(10004);
         List<Employee> employees = employeeDao.selectList(employee);
         //  没有使用地址时只查询第一条SQL
@@ -41,7 +41,7 @@ public class TestEmpDao {
 
     @Test
     public void test02() {
-        Employee employee = new Employee();
+        Employee employee = new Employee("1");
         employee.setEmpNo(10004);
 //        employee.setDeptNo(1002);
         List<Employee> employees = employeeDao.selectWithAddressList(employee);
@@ -50,7 +50,7 @@ public class TestEmpDao {
 
     @Test
     public void test03() {
-        Employee employee = new Employee();
+        Employee employee = new Employee("1");
         employee.setDeptNo(1002);
         DeptMent deptMent = employeeDao.selectDept(employee);
         System.out.println(deptMent);
@@ -58,7 +58,7 @@ public class TestEmpDao {
 
     @Test
     public void test04() {
-        Employee employee = new Employee();
+        Employee employee = new Employee("2");
         employee.setDeptNo(1002);
         DeptMent deptMent = employeeDao.selectDeptWithEmpInfo(employee);
         System.out.println(deptMent);

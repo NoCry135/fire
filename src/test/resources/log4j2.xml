@@ -1,0 +1,82 @@
+<Configuration status="WARN" monitorInterval="300">
+    <!--定义全局变量-->
+    <properties>
+        <property name="log_home">D:/export/Logs</property>
+        <property name="log_level">debug</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%t [%d] [%7r] %6p - %c::%M - %m \n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="Trace" fileName="${log_home}/fire-trace.log"
+                                 filePattern="${log_home}/fire-trace-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="%t [%d] [%7r] %6p - %c::%M - %m \n"/>
+            <Policies>
+                <!-- interval 多久执行一次备份，单位为 RollingRandomAccessFile的属性filePattern中%d{yyyy-MM-dd}的最小时间单位-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!--SizeBasedTriggeringPolicy size="100 MB"/-->
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="fire-sql" fileName="${log_home}/fire-sql.log"
+                                 filePattern="${log_home}/fire-sql-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %t %-5p # %n%m%n"/>
+            <Policies>
+                <!-- interval 多久执行一次备份，单位为 RollingRandomAccessFile的属性filePattern中%d{yyyy-MM-dd}的最小时间单位-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="500"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="METHOD-TRACE"
+                                 fileName="${log_home}/method-trace.log"
+                                 filePattern="${log_home}/method-trace-%d{yyyyMMdd}-%i.log">
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %t %-5p # %n%m%n"></PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy></TimeBasedTriggeringPolicy>
+                <SizeBasedTriggeringPolicy size="500M"></SizeBasedTriggeringPolicy>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="lib"
+                                 fileName="${log_home}/lib.log"
+                                 filePattern="${log_home}/lib-%d{yyyyMMdd}-%i.log">
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %t %-5p # %n%m%n"></PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy></TimeBasedTriggeringPolicy>
+                <SizeBasedTriggeringPolicy size="500M"></SizeBasedTriggeringPolicy>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <AsyncLogger name="com.ca.fire.aspect.MethodInvokeTraceAspect" level="DEBUG" additivity="false">
+            <AppenderRef ref="METHOD-TRACE"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="java.sql" level="${log_level}" additivity="false">
+            <AppenderRef ref="fire-sql"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.ca.fire.dao" level="${log_level}" additivity="false">
+            <AppenderRef ref="fire-sql"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.ca" level="${log_level}" additivity="false">
+            <AppenderRef ref="Trace"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.ca.fire.dao.TestUserDao" level="${log_level}" additivity="false">
+            <AppenderRef ref="Trace"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="org" level="info" additivity="false">
+            <AppenderRef ref="lib"/>
+        </AsyncLogger>
+        <AsyncLogger name="net.sf" level="info" additivity="false">
+            <AppenderRef ref="lib"/>
+        </AsyncLogger>
+        <Root level="${log_level}">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

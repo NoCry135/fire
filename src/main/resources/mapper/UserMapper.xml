@@ -71,7 +71,7 @@
         )
     </insert>
     <insert id="batchInsert">
-        INSERT INTO tb_user (user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user) VALUES
+        INSERT INTO tb_user (user_name,pass_word,tel_phone,email,create_time,update_time,create_user,update_user,age,city_code,city_name) VALUES
         <foreach item="item" index="index" collection="list" separator=",">
             (
             #{item.userName,jdbcType=VARCHAR},
@@ -80,7 +80,10 @@
             #{item.email,jdbcType=VARCHAR},
             now(), now(),
             #{item.createUser,jdbcType=VARCHAR},
-            #{item.updateUser,jdbcType=VARCHAR}
+            #{item.updateUser,jdbcType=VARCHAR},
+            #{item.age,jdbcType=INTEGER},
+            #{item.cityCode,jdbcType=CHAR},
+            #{item.cityName,jdbcType=VARCHAR}
 
             )
         </foreach>

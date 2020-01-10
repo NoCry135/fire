@@ -3,6 +3,7 @@ package com.ca.fire.dao;
 
 import com.ca.fire.domain.bean.User;
 import com.ca.fire.manager.UserManager;
+import com.ca.fire.test.string.RandomString;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
@@ -20,6 +21,9 @@ import java.util.*;
 @ContextConfiguration({"classpath*:spring/spring-config.xml"})
 public class TestUserDao {
     private static Logger logger = LogManager.getLogger(TestUserDao.class);
+    public static final String SOURCES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String TARGET = "1234567890";
+    RandomString rs = new RandomString();
 
     @Resource
     private UserDao userDao;
@@ -30,35 +34,42 @@ public class TestUserDao {
     @Test
     public void testBatchInsert() {
         System.out.println("start!");
-        long st = System.currentTimeMillis();
-        int count = 1000000;
-        List<User> list = new ArrayList<>(count);
-        long telPhone = 15110012000L;
+        int count = 150000;
+        int pageSize = 500;
+        long telPhone = 18500012000L;
+        long start = System.currentTimeMillis();
+        //创建一个对象
+
+        Random df = new Random();
         for (int i = 0; i < count; i++) {
-            String name = UUID.randomUUID().toString().substring(0, 10).toUpperCase();
-            String passWord = UUID.randomUUID().toString();
-            User user = new User();
-            user.setUserName(name);
-            user.setPassWord(passWord);
-            long l = telPhone + i;
-            user.setTelPhone(l + "");
-            user.setEmail(user.getTelPhone() + "@qq.com");
-            user.setCreateUser("sys");
-            user.setUpdateUser("sys");
-            list.add(user);
+            List<User> list = new ArrayList<>(count);
+            long st = System.currentTimeMillis();
+            for (int j = 0; j < pageSize; j++) {
+                String name = UUID.randomUUID().toString().substring(0, 10).toUpperCase();
+                String passWord = UUID.randomUUID().toString();
+                User user = new User();
+                user.setUserName(name);
+                user.setPassWord(passWord);
+                long l = telPhone + (i * pageSize + j);
+                user.setTelPhone(l + "");
+                user.setEmail(user.getTelPhone() + "@qq.com");
+                user.setCreateUser("sys");
+                user.setUpdateUser("sys");
+                user.setAge(df.nextInt(101));
+                String code = rs.generateString(new Random(), TARGET, 2);
+                user.setCityCode(code);
+                user.setCityName(rs.generateString(new Random(), SOURCES, 2) + "-" + code);
+                list.add(user);
+            }
+            Integer integer = userManager.batchInsert(list);
+            long st1 = System.currentTimeMillis();
+            logger.info("inset num:{},rows:{}, spend:{} ms", integer, (i * pageSize), (st1 - st));
+            list = null;
         }
-        long st1 = System.currentTimeMillis();
-        System.out.println("spend1 time = " + (st1 - st) + "ms");
 
-        List<List<User>> partition = Lists.partition(list, 10000);
-        for (List<User> users : partition) {
-            Integer integer = userDao.batchInsert(users);
-            System.out.println(integer);
-        }
         long end = System.currentTimeMillis();
-        System.out.println("spend time = " + (end - st) + "ms");
-
-//
+        logger.info("total spend time =:{} ms", (end - start));
+        System.out.println("end!");
     }
 
     @Test

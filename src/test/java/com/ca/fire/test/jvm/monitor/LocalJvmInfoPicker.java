@@ -9,7 +9,7 @@ import java.lang.management.RuntimeMXBean;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class LocalJvmInfoPicker {
+public class    LocalJvmInfoPicker {
 
     public static void main(String[] args) {
         final List<GarbageCollectorMXBean> gcList = ManagementFactory.getGarbageCollectorMXBeans();

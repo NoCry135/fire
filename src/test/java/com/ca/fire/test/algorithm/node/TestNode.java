@@ -5,8 +5,24 @@ import org.junit.Test;
 
 public class TestNode {
 
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
+    }
+
     @Test
     public void test01() {
+        int[] nums = new int[]{1, 2, 1,3,2,1};
+        removeDuplicates(nums);
         ListNode listNode1 = new ListNode(1);
         ListNode listNode2 = new ListNode(2);
         ListNode listNode3 = new ListNode(3);

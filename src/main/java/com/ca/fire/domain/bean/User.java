@@ -25,6 +25,10 @@ public class User implements Serializable {
     private Integer pageSize;
     private Long id;
 
+    private String cityCode;
+
+    private String cityName;
+
     private String createUser;
 
     private String updateUser;
@@ -101,6 +105,22 @@ public class User implements Serializable {
     public User(String userName, Integer age) {
         this.userName = userName;
         this.age = age;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public void setStartIndex(Integer startIndex) {
