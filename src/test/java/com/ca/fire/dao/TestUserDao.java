@@ -2,11 +2,14 @@ package com.ca.fire.dao;
 
 
 import com.ca.fire.domain.bean.User;
+import com.ca.fire.domain.bean.UserModel;
 import com.ca.fire.manager.UserManager;
 import com.ca.fire.test.string.RandomString;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath*:spring/spring-config.xml"})
@@ -87,13 +91,51 @@ public class TestUserDao {
 
     @Test
     public void testSelect() {
-        User userQuery = new User();
-//        userQuery.setId(2L);
-        userQuery.setEmail("1234567@qq.com");
-//        User user = userDao.selectById(2L);
-        User user = userDao.select(userQuery);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        CountDownLatch countDownLatch = new CountDownLatch(100);
+        CopyOnWriteArrayList<Future<List<UserModel>>> list = new CopyOnWriteArrayList<>();
 
-        logger.debug("testSelect" + user);
+        for (int i = 0; i < 100; i++) {
+            Future<List<UserModel>> submit = executorService.submit(new Callable<List<UserModel>>() {
+                @Override
+                public List<UserModel> call() throws Exception {
+                    User userQuery = new User();
+//        userQuery.setId(2L);
+//                    userQuery.setEmail("1234567@qq.com");
+//        User user = userDao.selectById(2L);
+                    userQuery.setIds(getIds());
+                    List<UserModel> userModels = userDao.queryAllUser(userQuery);
+                    return userModels;
+                }
+            });
+            list.add(submit);
+            countDownLatch.countDown();
+        }
+        for (Future<List<UserModel>> listFuture : list) {
+            List<UserModel> userModels = null;
+            try {
+                userModels = listFuture.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            logger.debug("testSelect" + userModels);
+        }
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private List<Long> getIds() {
+        Long a = Long.valueOf(new Random().nextInt(10));
+        Long b = Long.valueOf(new Random().nextInt(10));
+        return Arrays.asList(a, b);
     }
 
     @Test

@@ -59,7 +59,7 @@
         <property name="defaultTargetDataSource" ref="dataSource2"/>
     </bean>
 
-    <bean id="dataSource" class="com.ca.fire.util.MyRoutingDataSource">
+    <bean id="dataSource" class="com.ca.fire.until.MyRoutingDataSource">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="1" value-ref="dataSource1"/>
