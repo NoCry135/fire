@@ -1,4 +1,4 @@
-package com.ca.fire.test.guava;
+package com.ca.fire.test.guava.current;
 
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.*;

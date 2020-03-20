@@ -3,6 +3,8 @@ package com.ca.fire.test.string;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TestStringBuild {
@@ -11,6 +13,12 @@ public class TestStringBuild {
 
     @Test
     public void test01() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.HOUR, 1);
+        Date createTimeWhere = c.getTime();
+        long time = createTimeWhere.getTime();
+        System.out.println(time);
         List<String> list = Arrays.asList("id", "name", "create_time", "is_delete");
         String tb_user = getInsertSQL("tb_user", list);
         System.out.println(tb_user);
