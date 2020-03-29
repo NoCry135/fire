@@ -9,6 +9,8 @@ public interface EmployeeDao {
 
     List<Employee> selectList(Employee employee);
 
+    List<Employee> selectList();
+
     List<Employee> selectWithAddressList(Employee employee);
 
     DeptMent selectDept(Employee employee);
