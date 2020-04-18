@@ -42,6 +42,10 @@ public class Student {
         System.out.println("私有的构造方法   年龄：" + age);
     }
 
+    static {
+        System.out.println("static method");
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -72,6 +76,7 @@ public class Student {
     }
 
     public static void main(String[] args) {
+        new Student();
         System.out.println("student main 执行");
     }
 
