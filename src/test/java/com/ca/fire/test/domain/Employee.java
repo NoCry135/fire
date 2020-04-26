@@ -1,6 +1,8 @@
 package com.ca.fire.test.domain;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable {
     private Long id;
     private String name;
     private Integer age;

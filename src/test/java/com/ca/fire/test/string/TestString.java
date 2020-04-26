@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TestString {
 
     public static void main(String[] args) {
+        boolean a1 = Character.isDigit('a');
+        boolean b1 = Character.isDigit('1');
+        System.out.println(a1 + "-" + b1);
         Integer a = 12345;
         Integer b = 12345;
         Integer c = 12346;
@@ -25,11 +28,85 @@ public class TestString {
         new ConcurrentHashMap<>();
     }
 
+    @Test
+    public void testChar() {
+        String str = "abcdef";
+        System.out.println(str.indexOf(1));
+        System.out.println(str.indexOf(1, 1));
+        System.out.println(str.indexOf("b"));
+        System.out.println(str.indexOf("b", 2));
+        System.out.println('a' != 'a');
+
+    }
+
+    class Solution {
+        public boolean canConstruct(String ransom, String magazine) {
+            if (magazine.length() < ransom.length()) return false;
+            int caps[] = new int[26];
+            for (char c : ransom.toCharArray()) {
+                int index = magazine.indexOf(c, caps[c - 'a']);
+                if (index == -1)
+                    return false;
+                caps[c - 97] = index + 1;
+            }
+            return true;
+        }
+    }
+
+    public boolean canConstruct(String ransomNote, String magazine) {
+        char[] r = ransomNote.toCharArray();
+        char[] m = magazine.toCharArray();
+        Arrays.sort(r);
+        Arrays.sort(m);
+        int i = 0, j = 0;
+        while (i < r.length && j < m.length) {
+            if (r[i] > m[j]) j++;
+            else if (r[i] < m[j]) return false;
+            else { // 一个字母只能用一次，所以当相等时，两个指针都需要移动
+                i++;
+                j++;
+            }
+        }
+        return i == r.length;
+    }
+
+    @Test
+    public void testreplaceSpaces() {
+        String smith____ = replaceSpaces("Mr John Smith    ", 13);
+        System.out.println(smith____);
+    }
+
+    public String replaceSpaces(String S, int length) {
+        char[] chars = S.toCharArray();
+        int count = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ' ') {
+                count++;
+            }
+        }
+        char[] newChars = new char[2 * count +length];
+        int len = newChars.length;
+        for (int j = chars.length - 1; j >= 0; j--) {
+            if (chars[j] != ' ') {
+                newChars[len--] = chars[j];
+            } else {
+                newChars[len--] = '0';
+                newChars[len--] = '2';
+                newChars[len--] = '%';
+            }
+        }
+
+        return String.valueOf(newChars);
+
+    }
 
     @Test
     public void testStartWith1() {
-        String str = "emg153562325904ts2L1OUT02-2";
 
+
+        String str = "emg153562325904ts2L1OUT02-2";
+        str.toCharArray();
+        str.charAt(0);
         String s1 = new String("EMG153562325904ts2L1OUT02");
 
         String s2 = new String("153562325904ts2L1OUT02-3");
