@@ -1,12 +1,72 @@
 package com.ca.fire.test.collections;
 
 import com.ca.fire.domain.bean.User;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.junit.Test;
+import org.omg.CORBA_2_3.portable.InputStream;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class TestMap {
+
+
+    private static Map<String, String> cacheMap = new HashMap<>();
+
+    private static Map<String, String> concurrentAcheMap = new ConcurrentHashMap<>();
+
+    @Test
+    public void testcacheMap() {
+//        CollectionUtils.isNotEmpty();
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+                10, 10, 1000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>()
+        );
+        while (true) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            threadPoolExecutor.execute(
+                    new Thread() {
+
+                        @Override
+                        public void run() {
+//                            Random random = new Random();
+//                            String key = Thread.currentThread().getId() + "_" + random.nextInt(10);
+//                            String value = key + ":" + System.currentTimeMillis();
+//                            cacheMap.put(key, value);
+                            visist();
+                        }
+                    }
+
+            );
+
+        }
+
+
+    }
+
+    private void visist() {
+        Random random = new Random();
+        String key = Thread.currentThread().getId() + "_" + random.nextInt(10);
+        String value = getValue(key);
+        System.out.println("key:" + key + "; value:" + value);
+    }
+
+
+    public String getValue(String key) {
+        if (cacheMap.containsKey(key)) {
+            return cacheMap.get(key);
+        }
+        String value = key + ":" + System.currentTimeMillis();
+        cacheMap.put(key, value);
+        return value;
+
+    }
+
 
     public static void main(String[] args) {
         Map<String, Object> result = new CaseInsensitiveMap();
@@ -20,7 +80,6 @@ public class TestMap {
         System.out.println(result.get("baC"));
         System.out.println(result.get("AAA"));
     }
-
 
 
     @Test
