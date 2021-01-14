@@ -27,7 +27,7 @@
         <github.pagehelper.version>4.1.6</github.pagehelper.version>
         <disruptor.version>3.3.7</disruptor.version>
         <guava.version>25.0-jre</guava.version>
-        <poi.version>3.15</poi.version>
+        <poi.version>4.1.2</poi.version>
         <freemarker.version>2.3.23</freemarker.version>
         <junit.version>4.12</junit.version>
         <commons-collections4.version>4.1</commons-collections4.version>
